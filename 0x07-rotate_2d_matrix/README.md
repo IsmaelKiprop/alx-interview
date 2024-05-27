@@ -60,7 +60,7 @@ given a matrix(old_matrix), the goal is to convert it to another matrix(new_matr
     | a30, a31, a32  |                     | a32, a22, a12  |
     |_              _|                     |_              _|
 
-Now if you look closely the columns are reversed for all ith indexes in each rows and also the size of the matrix is maintained. so get the indexes of the rows in the matrix(outer iteration/loop) now iterate the matrix(inner loop).
+Now if you look closely the columns are reversed for all ith indexes in each rows and also the size of the matrix is maintained. so get the indexes of the rows in the matrix(outer iteration/loop) now iterate the matrix(inner loop)
 
 On your inner loop, form a new list(row) containing the ith element of all row visited then append this to the new_matrix object.
 
