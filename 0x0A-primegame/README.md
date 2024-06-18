@@ -32,4 +32,5 @@ The project consists of a single Python file `0-prime_game.py` with a function `
 ### Function Prototype
 
 ```python
+
 def isWinner(x, nums)
