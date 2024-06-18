@@ -1,48 +1,57 @@
 #!/usr/bin/python3
-def sieve_of_eratosthenes(max_num):
-    is_prime = [True] * (max_num + 1)
-    p = 2
-    while (p * p <= max_num):
-        if (is_prime[p] == True):
-            for i in range(p * p, max_num + 1, p):
-                is_prime[i] = False
-        p += 1
-    prime_numbers = [p for p in range(2, max_num + 1) if is_prime[p]]
-    return prime_numbers
+
+""" Prime Game Algorithm Python """
+
+
+def is_prime(n):
+    """ Checks if a number given n is a prime number """
+    for i in range(2, int(n ** 0.5) + 1):
+        if not n % i:
+            return False
+    return True
+
+
+def calculate_primes(n, primes):
+    """ Calculate all primes """
+    top_prime = primes[-1]
+    if n > top_prime:
+        for i in range(top_prime + 1, n + 1):
+            if is_prime(i):
+                primes.append(i)
+            else:
+                primes.append(0)
+
 
 def isWinner(x, nums):
-    if x == 0 or not nums:
-        return None
+    """
+    x is the number of rounds and nums is an array of n
+    Return: name of the player that won the most rounds
+    If the winner cannot be determined, return None
+    You can assume n and x will not be larger than 10000
+    """
 
-    max_num = max(nums)
-    prime_numbers = sieve_of_eratosthenes(max_num)
-    prime_set = set(prime_numbers)
-    
-    def game_result(n):
-        remaining = set(range(1, n + 1))
-        current_player = 0  # Maria starts, 0 for Maria, 1 for Ben
-        
-        while prime_set.intersection(remaining):
-            for p in prime_numbers:
-                if p in remaining:
-                    multiples = set(range(p, n + 1, p))
-                    remaining -= multiples
-                    break
-            current_player = 1 - current_player  # Switch player
-        
-        return 1 - current_player  # Return the winner (1 - current_player)
+    players_wins = {"Maria": 0, "Ben": 0}
 
-    results = [game_result(n) for n in nums]
-    maria_wins = results.count(0)
-    ben_wins = results.count(1)
+    primes = [0, 0, 2]
 
-    if maria_wins > ben_wins:
+    calculate_primes(max(nums), primes)
+
+    for round in range(x):
+        sum_options = sum((i != 0 and i <= nums[round])
+                          for i in primes[:nums[round] + 1])
+
+        if (sum_options % 2):
+            winner = "Maria"
+        else:
+            winner = "Ben"
+
+        if winner:
+            players_wins[winner] += 1
+
+    if players_wins["Maria"] > players_wins["Ben"]:
         return "Maria"
-    elif ben_wins > maria_wins:
+    elif players_wins["Ben"] > players_wins["Maria"]:
         return "Ben"
-    else:
-        return None
 
-if __name__ == "__main__":
-    print("Winner: {}".format(isWinner(5, [2, 5, 1, 4, 3])))
+    return None
     
